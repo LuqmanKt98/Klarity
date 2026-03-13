@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Klarity - Mental Wellness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --brand-near-black: #1A1A1A;
+        --brand-gray: #707070;
+        --brand-beige: #E4E5DB;
+        --brand-teal: #038C7F;
+        --brand-ocean: #1F6373;
+        --brand-coral: #F2808A;
+        --brand-violet: #635EF2;
+      }
+      body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: var(--brand-beige);
+        color: var(--brand-near-black);
+        overflow-x: hidden;
+      }
+      h1, h2, h3, .manrope {
+        font-family: 'Manrope', sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .brand-bg {
+        background-color: var(--brand-beige);
+      }
+      .grain-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        z-index: -1;
+        opacity: 0.4;
+      }
+      .orb-1 { width: 300px; height: 300px; background: radial-gradient(circle, #5CF2BB 0%, #1F6373 100%); top: -100px; right: -50px; }
+      .orb-2 { width: 250px; height: 250px; background: radial-gradient(circle, #F2808A 0%, #635EF2 100%); bottom: 100px; left: -100px; }
+      
+      ::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+      }
+
+      @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes scale-in {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+      }
+      .animate-fade-in {
+        animation: fade-in 0.4s ease-out forwards;
+      }
+      .animate-scale-in {
+        animation: scale-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "recharts": "https://esm.sh/recharts@^3.7.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

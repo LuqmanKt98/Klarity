@@ -1,0 +1,7 @@
+{
+  "name": "Klarity_v0.2",
+  "description": "A minimal, beautiful mental wellness app designed for calm reflection, habit tracking, and curated affirmations.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

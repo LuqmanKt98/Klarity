@@ -1,0 +1,99 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: {uid}
+    // Fields:
+    //   - uid: string (required)
+    //   - email: string (required)
+    //   - displayName: string
+    //   - photoURL: string
+    //   - onboardingComplete: bool (required)
+    //   - onboardingData: map
+    //   - preferences: map
+    //   - lastCheckInDate: string
+    //   - createdAt: string
+    //   - updatedAt: string
+    //
+    // Collection: threads
+    // Document ID: {threadId}
+    // Fields:
+    //   - id: string (required)
+    //   - uid: string (required)
+    //   - title: string (required)
+    //   - messages: list (required)
+    //   - updatedAt: int
+    //
+    // Collection: affirmations
+    // Document ID: {affirmationId}
+    // Fields:
+    //   - id: string (required)
+    //   - uid: string (required)
+    //   - text: string (required)
+    //
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isDocOwner() {
+      return isAuthenticated() && request.auth.uid == resource.data.uid;
+    }
+
+    function incomingDocOwner() {
+      return isAuthenticated() && request.auth.uid == request.resource.data.uid;
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'onboardingComplete']) &&
+             data.uid is string &&
+             data.email is string &&
+             data.onboardingComplete is bool &&
+             data.email.size() < 255;
+    }
+
+    function isValidThread(data) {
+      return data.keys().hasAll(['id', 'uid', 'title', 'messages']) &&
+             data.uid == request.auth.uid &&
+             data.title is string && data.title.size() < 200 &&
+             data.messages is list && data.messages.size() < 500;
+    }
+
+    function isValidAffirmation(data) {
+      return data.keys().hasAll(['id', 'uid', 'text']) &&
+             data.uid == request.auth.uid &&
+             data.text is string && data.text.size() < 500;
+    }
+
+    // Rules
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid) && isValidUser(request.resource.data);
+      allow update: if isOwner(uid) && isValidUser(request.resource.data);
+    }
+
+    match /threads/{threadId} {
+      allow read: if isDocOwner();
+      allow create: if incomingDocOwner() && isValidThread(request.resource.data);
+      allow update: if isDocOwner() && incomingDocOwner() && isValidThread(request.resource.data);
+      allow delete: if isDocOwner();
+    }
+
+    match /affirmations/{affirmationId} {
+      allow read: if isDocOwner();
+      allow create: if incomingDocOwner() && isValidAffirmation(request.resource.data);
+      allow update: if isDocOwner() && incomingDocOwner() && isValidAffirmation(request.resource.data);
+      allow delete: if isDocOwner();
+    }
+  }
+}
