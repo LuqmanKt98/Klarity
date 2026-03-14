@@ -2,8 +2,8 @@
 import { GoogleGenAI, Type, FunctionDeclaration, Modality, LiveServerMessage, HarmCategory, HarmBlockThreshold } from "@google/genai";
 import { UserPreferences, Message, Resource } from './types';
 
-// Initializing the Google GenAI client with the required API Key from process.env
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Initializing the Google GenAI client with the required API Key from Vite env
+const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
 const SENTIMENT_MAP: Record<string, number> = {
   happy: 0.8, joyful: 0.9, calm: 0.5, grateful: 0.7, peace: 0.6,
@@ -70,7 +70,7 @@ Return only the title string.`;
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-2.0-flash',
       contents: prompt,
       config: { temperature: 0.8 },
     });
@@ -95,7 +95,7 @@ Return the recommendations in a structured JSON format with:
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-2.0-flash',
       contents: prompt,
       config: {
         responseMimeType: 'application/json',
@@ -155,7 +155,7 @@ export async function generateAIResponse(messages: Message[], preferences: UserP
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-3.1-pro-preview',
+      model: 'gemini-2.5-pro-preview-05-06',
       contents: contents as any,
       config: {
         systemInstruction,
