@@ -155,7 +155,7 @@ export async function generateAIResponse(messages: Message[], preferences: UserP
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-pro-preview-05-06',
+      model: 'gemini-2.5-pro',
       contents: contents as any,
       config: {
         systemInstruction,
